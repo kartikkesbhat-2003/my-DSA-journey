@@ -14,6 +14,15 @@ class Node {
         this->data = data;
         this->next = NULL;
     }
+
+    ~Node () {
+        int value = this -> data;
+        // memory free
+        if(this -> next != NULL) {
+            delete next;
+            this -> next = NULL;
+        }
+    }
 };
 
 // printing linked list
@@ -84,6 +93,53 @@ void insertAtPosition (Node* &head,Node* tail, int pos, int d) {
 
 }
 
+// delete the node at given position
+
+void deleteNode (Node* &head, Node* &tail, int pos) {
+
+    // deleting first or starting node
+
+    if(pos == 1) {
+        Node* nodeToDelete = head;
+        head = head -> next;
+        delete nodeToDelete;
+
+        if (head == nullptr) {
+            tail = nullptr;
+        }
+
+        return;
+    }
+
+
+    Node* temp = head;
+    int count = 1;
+
+    while (count < pos - 1) {
+        temp = temp -> next;
+        count ++;
+    }
+
+    // deleting last node
+
+    if(temp -> next == NULL) {
+        cout << "Invalid position. No node found at position " << pos << endl;
+        return;
+    }
+
+    // deleting any middle node
+
+    Node* nodeToDelete = temp -> next;
+    temp -> next = nodeToDelete -> next;
+    delete nodeToDelete;
+
+    // If the last node is deleted, update tail
+    if (nodeToDelete == tail) {
+        tail = temp;
+    }
+
+}
+
 int main () {
 
     Node* node1 = new Node(10);
@@ -106,6 +162,9 @@ int main () {
     
     insertAtPosition(head, tail, 8, 13);
 
+    print(head);
+
+    deleteNode(head, tail, 3);
     print(head);
 
 }
