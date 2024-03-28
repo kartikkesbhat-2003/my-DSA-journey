@@ -5,16 +5,17 @@ using namespace std;
 class Node {
 
     public:
-
     int data;
     // pointer for next node
     Node* next;
 
+    // constructor
     Node(int data) {
         this->data = data;
         this->next = NULL;
     }
 
+    // destructor
     ~Node () {
         int value = this -> data;
         // memory free
@@ -53,7 +54,7 @@ void insertAtHead (Node* &head, int d) {
 
 // inserting node at the end of the linked list
 
-void insertAtTail (Node* &tail, int d) {
+void insertAtTail (Node* &head, Node* &tail, int d) {
 
     Node* temp = new Node(d);
     tail -> next = temp;
@@ -63,7 +64,7 @@ void insertAtTail (Node* &tail, int d) {
 
 // insert at given position
 
-void insertAtPosition (Node* &head,Node* tail, int pos, int d) {
+void insertAtPosition (Node* &head, Node* &tail, int pos, int d) {
 
     // inserting at the head
     if(pos == 1) {
@@ -84,7 +85,7 @@ void insertAtPosition (Node* &head,Node* tail, int pos, int d) {
 
     // inserting at the tail
     if(temp -> next == NULL) {
-        insertAtTail(tail, d);
+        insertAtTail(head, tail, d);
         return;
     }
 
@@ -98,46 +99,55 @@ void insertAtPosition (Node* &head,Node* tail, int pos, int d) {
 void deleteNode (Node* &head, Node* &tail, int pos) {
 
     // deleting first or starting node
-
     if(pos == 1) {
-        Node* nodeToDelete = head;
-        head = head -> next;
-        delete nodeToDelete;
 
-        if (head == nullptr) {
-            tail = nullptr;
+        // if only one node present 
+        if(head -> next == NULL) {
+            Node* temp = head;
+            head = NULL;
+            tail = NULL;
+            return;
         }
+        
+        Node* temp = head;
+        head = head -> next;
+        temp -> next = NULL;
+        delete temp;
 
         return;
     }
 
 
-    Node* temp = head;
+    Node* current = head;
     int count = 1;
 
+    // traversing to the given position
     while (count < pos - 1) {
-        temp = temp -> next;
+        current = current -> next;
         count ++;
     }
 
-    // deleting last node
+    Node* temp = current -> next;
 
+    // Deleting last node
     if(temp -> next == NULL) {
-        cout << "Invalid position. No node found at position " << pos << endl;
+        current -> next = NULL;
+        tail = current;
+        temp -> next = NULL;
+        delete temp;
         return;
     }
 
-    // deleting any middle node
+    // deleting middle node
+    current -> next = temp -> next;
+    temp -> next = NULL;
+    delete temp;
 
-    Node* nodeToDelete = temp -> next;
-    temp -> next = nodeToDelete -> next;
-    delete nodeToDelete;
+}
 
-    // If the last node is deleted, update tail
-    if (nodeToDelete == tail) {
-        tail = temp;
-    }
-
+// printing head and tail for testing purpose
+void ht (Node* &head, Node* &tail) {
+    cout << "Head : " << head -> data << "\n" << "Tail : " << tail -> data << endl;
 }
 
 int main () {
@@ -150,21 +160,56 @@ int main () {
     Node* head = node1;
     Node* tail = node1;
 
+    ht(head, tail);
+
     insertAtHead(head, 9);
-    print(head);
-    insertAtTail(tail, 11);
-    insertAtTail(tail, 12);
-    insertAtTail(tail, 14);
-    insertAtTail(tail, 15);
-    insertAtTail(tail, 16);
 
     print(head);
-    
+    ht(head, tail);
+
+    insertAtTail(head, tail, 11);
+
+    print(head);
+    ht(head, tail);
+
+    insertAtTail(head, tail, 12);
+
+    print(head);
+    ht(head, tail);
+
+    insertAtTail(head, tail, 14);
+
+    print(head);
+    ht(head, tail);
+
+    insertAtTail(head, tail, 15);
+
+    print(head);
+    ht(head, tail);
+
+    insertAtTail(head, tail, 16);
+
+    print(head);
+    ht(head, tail);
+
     insertAtPosition(head, tail, 8, 13);
-
     print(head);
+
+    ht(head, tail);
+
 
     deleteNode(head, tail, 3);
     print(head);
 
+    ht(head, tail);
+
+    deleteNode(head, tail, 7);
+    print(head);
+
+    ht(head, tail);
+
+    deleteNode(head, tail, 1);
+
+    print(head);
+    ht(head, tail);
 }
