@@ -119,12 +119,12 @@ void deleteNode (Node* &head, Node* &tail, int pos) {
 
 
     Node* current = head;
-    int count = 1;
+    int curr_pos = 1;
 
     // traversing to the given position
-    while (count < pos - 1) {
+    while (curr_pos < pos - 1) {
         current = current -> next;
-        count ++;
+        curr_pos ++;
     }
 
     Node* temp = current -> next;
