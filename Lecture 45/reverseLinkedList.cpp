@@ -41,7 +41,7 @@ void print(Node* &head) {
     cout << endl;
 }
 
-// inserting new node at the start of linked list
+// inserting new node at the start of linked list 
 
 void insertAtHead (Node* &head, int d) {
 
